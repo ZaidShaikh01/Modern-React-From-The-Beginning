@@ -75,17 +75,17 @@
 // console.log(otherNotes);
 
 //Object destructuring
-const note = {
-  title: 'Meeting Notes',
-  content: 'Discuss Project Roadmap',
-  isPinned: true,
-};
-// Name has to be same
-const { title } = note;
-console.log(title);
-// IF you want to rename it
-const { content: noteContent } = note;
-console.log(noteContent);
+// const note = {
+//   title: 'Meeting Notes',
+//   content: 'Discuss Project Roadmap',
+//   isPinned: true,
+// };
+// // Name has to be same
+// const { title } = note;
+// console.log(title);
+// // IF you want to rename it
+// const { content: noteContent } = note;
+// console.log(noteContent);
 
 // Nested dstructuring
 // const user = {
@@ -103,46 +103,109 @@ console.log(noteContent);
 // } = user;
 // console.log(otherHobbies);
 
-const notes = [
-  {
-    title: 'Meeting Notes',
-    content: 'Discuss project roadmap',
-    isPinned: true,
-  },
-  {
-    title: 'Grocery Notes',
-    content: 'Discuss Grocery roadmap',
-    isPinned: false,
-  },
-  {
-    title: 'Workout Notes',
-    content: 'Discuss workout roadmap',
-    isPinned: true,
-  },
-  {
-    title: 'Recipe Notes',
-    content: 'Discuss recipe roadmap',
-    isPinned: false,
-  },
-];
-// Map, Creates new Array and transform one array to other depending upon the condition
-const noteTitle = notes.map((note, index) => `${index}. ${note.title}`);
-// console.log(noteTitle);
+// const notes = [
+//   {
+//     title: 'Meeting Notes',
+//     content: 'Discuss project roadmap',
+//     isPinned: true,
+//   },
+//   {
+//     title: 'Grocery Notes',
+//     content: 'Discuss Grocery roadmap',
+//     isPinned: false,
+//   },
+//   {
+//     title: 'Workout Notes',
+//     content: 'Discuss workout roadmap',
+//     isPinned: true,
+//   },
+//   {
+//     title: 'Recipe Notes',
+//     content: 'Discuss recipe roadmap',
+//     isPinned: false,
+//   },
+// ];
+// // Map, Creates new Array and transform one array to other depending upon the condition
+// const noteTitle = notes.map((note, index) => `${index}. ${note.title}`);
+// // console.log(noteTitle);
 
-// Filter, Similar to map but it reuqires a condition to filter
-const pinnedNote = notes
-  .filter((note) => note.isPinned)
-  .map((note) => note.title);
-// console.log(pinnedNote);
+// // Filter, Similar to map but it reuqires a condition to filter
+// const pinnedNote = notes
+//   .filter((note) => note.isPinned)
+//   .map((note) => note.title);
+// // console.log(pinnedNote);
 
-// Reduce, it is used to reduce array to a single value
-const numbers = [1, 2, 3, 4, 5];
-// Zero is default here
-const sum = numbers.reduce((total, number) => total + number, 0);
-// console.log(sum);
+// // Reduce, it is used to reduce array to a single value
+// const numbers = [1, 2, 3, 4, 5];
+// // Zero is default here
+// const sum = numbers.reduce((total, number) => total + number, 0);
+// // console.log(sum);
 
-const totalChar = notes.reduce((total, note) => total + note.content.length, 0);
-console.log(totalChar);
+// const totalChar = notes.reduce((total, note) => total + note.content.length, 0);
+// console.log(totalChar);
 
-// For each
-notes.forEach((note) => console.log(note.title));
+// // For each
+// notes.forEach((note) => console.log(note.title));
+
+// // Optional chaining & nullish Coalescing operator
+// const user = {
+//   name: 'Brad',
+// };
+// console.log(user.address?.city);
+
+// // Nullish coalescing
+// // Same as I've learnt in flutter
+// let value = null;
+// // checks if null if yes then gives the value at right
+// let result = value ?? 'Default Value';
+// console.log(result);
+
+// console.log(user.address?.city ?? 'Unknown');
+
+// // Immutability & Spread Operator
+// const notes = ['M', 'n', 'o'];
+// notes.push('l');
+// // This is spread operator
+// const newNotes = [...notes];
+// newNotes.push('k');
+
+// const modifiedNote = notes.map((note) => (note === 'M' ? 'Z' : note));
+// console.log(modifiedNote);
+
+// const user = {
+//   name: 'Haldsfj',
+//   age: 35,
+// };
+// const newUser = {...user};
+// console.log(newUser);
+
+// const myPromise = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     reject('Promise rejected');
+//   }, 2000);
+// });
+
+// myPromise
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+// fetch('https://jsonplaceholder.typicode.com/todos/1')
+//   .then((response) => response.json())
+//   .then((data) => console.log(data))
+//   .catch((error) => console.log(error));
+
+const fetchData = async () => {
+  try {
+    const response = await fetch(
+      'https://jsonplaceholder.typicode.com/todos/1',
+    );
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+fetchData();
