@@ -5,7 +5,11 @@ const App = () => {
   return (
     <div>
       {/* <h1>Hello {name}</h1> */}
-      <Rating />
+      <Rating
+        heading='How do you feel about React?'
+        color='red'
+        feedbackMessages={['Terrible', 'poor', 'meh', 'good', 'excellent']}
+      />
     </div>
   );
 };
