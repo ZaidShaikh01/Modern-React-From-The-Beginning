@@ -1,5 +1,5 @@
 import { useState } from 'react';
-const NoteForm = () => {
+const NoteForm = ({ notes, setNotes }) => {
   //   const [title, setTitle] = useState('');
   //   const [priority, setPriority] = useState('Medium');
   //   const [category, setCategory] = useState('Work');
@@ -14,14 +14,32 @@ const NoteForm = () => {
 
   const handleChange = (e) => {
     setFormData({
-        // We are spreading the data as it is in form
+      // We are spreading the data as it is in form
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form Submitted: ', formData);
+    if (!formData.title || !formData.description) return;
+    //Create note object
+    const newNote = { id: Date.now(), ...formData };
+
+    //Addnotes to state
+    setNotes([newNote, ...notes]);
+
+    //Reset Form Data
+    setFormData({
+      title: '',
+      category: 'Work',
+      priority: 'Medium',
+      description: '',
+    });
+  };
 
   return (
-    <form className='mb-6'>
+    <form onSubmit={handleSubmit} className='mb-6'>
       <div className='mb-4'>
         <label htmlFor='title' className='block font-semibold'>
           Title
