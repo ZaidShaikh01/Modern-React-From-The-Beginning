@@ -1,6 +1,16 @@
+import { useRef, useEffect } from 'react';
+
 const Button = ({ type, isRunning = false, onClick }) => {
+  const startButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (startButtonRef.current) {
+      startButtonRef.current.focus();
+    }
+  }, []);
   return type === 'Start' ? (
     <button
+      ref={startButtonRef}
       onClick={onClick}
       className='mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-3'
     >
