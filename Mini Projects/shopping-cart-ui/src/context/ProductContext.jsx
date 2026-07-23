@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 
 export const ProductContext = createContext();
 
@@ -24,7 +24,7 @@ export function ProductProvider({ children }) {
     };
     fetchProducts();
   }, []);
-  
+
   return (
     <ProductContext.Provider
       value={{
@@ -36,4 +36,9 @@ export function ProductProvider({ children }) {
       {children}
     </ProductContext.Provider>
   );
+}
+
+// Custom hook
+export function useProducts() {
+  return useContext(ProductContext);
 }
