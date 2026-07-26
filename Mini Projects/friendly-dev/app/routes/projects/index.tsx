@@ -3,6 +3,7 @@ import ProjectCard from '~/components/ProjectCard';
 import type { Route } from './+types/index';
 import type { Project } from '~/types';
 import { index } from '@react-router/dev/routes';
+import Pagination from '~/components/Pagination';
 
 // Request has the type of Route.LoaderArgs & Promise is the return type of the function
 export async function loader({
@@ -22,7 +23,7 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
   const { projects } = loaderData as { projects: Project[] };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 2;
+  const projectsPerPage = 10;
 
   // Calculate total pages
   const totalPages = Math.ceil(projects.length / projectsPerPage);
@@ -33,27 +34,6 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
   const currentProjects = projects.slice(indexOfFirst, indexOfLast);
   console.log(totalPages);
 
-  const renderPagination = () => {
-    return <div className='flex justify-center gap-2 mt-8'>
-     
-      {Array.from({ length: totalPages }, (_, idx) => (
-        <button
-          key={idx + 1}
-          className={`px-3 py-1 cursor-pointer rounded ${
-            currentPage === idx + 1
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-700 text-gray-200'
-          }`}
-          onClick={() => {
-            setCurrentPage(idx + 1);
-          }}
-        >
-          {idx + 1}
-        </button>
-      ))}
-    </div>;
-  };
-
   return (
     <>
       <h2 className='text-3xl text-white font-bold mb-8'>Projects</h2>
@@ -62,7 +42,11 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
-      {totalPages > 1 && renderPagination()}
+      <Pagination
+        currentPage={currentPage}
+        onPageChanged={setCurrentPage}
+        totalPages={totalPages}
+      />
     </>
   );
 };
