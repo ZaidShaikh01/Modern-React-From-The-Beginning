@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<{ projects: Project[] }> {
-  const res = await fetch('http://localhost:8000/projects');
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
   const data = await res.json();
 
   // Projects is an object of data. & data is list of type Project & we have described project in type.ts
@@ -74,7 +74,7 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
         <motion.div layout className='grid gap-6 sm:grid-cols-2'>
           {currentProjects.map((project) => (
             <motion.div key={project.id} layout>
-              <ProjectCard  project={project} />
+              <ProjectCard project={project} />
             </motion.div>
           ))}
         </motion.div>
