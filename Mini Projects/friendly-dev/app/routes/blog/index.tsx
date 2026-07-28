@@ -9,6 +9,9 @@ export async function loader({
   const res = await fetch(url.href);
   if (!res.ok) throw new Error('Failed to fetch data');
   const data = await res.json();
+  data.sort((a: PostMeta, b: PostMeta) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
   return { posts: data };
 }
 
