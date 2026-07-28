@@ -55,6 +55,7 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
     <>
       <h2 className='text-3xl text-white font-bold mb-8'>Projects</h2>
 
+//Categories button
       <div className='flex flex-wrap gap-2 mb-8'>
         {categories.map((category) => (
           <button
@@ -69,6 +70,7 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
           </button>
         ))}
       </div>
+      
 
       <AnimatePresence mode='wait'>
         <motion.div layout className='grid gap-6 sm:grid-cols-2'>
