@@ -2,6 +2,7 @@ import type { Project } from '~/types';
 import { Link } from 'react-router';
 
 const ProjectCard = ({ project }: { project: Project }) => {
+  console.log(import.meta.env.VITE_STRAPI_URL);
   return (
     <Link
       className='block transform transition duration-300 hover:scale-[1.02]'
