@@ -1,14 +1,14 @@
 import { Link } from 'react-router';
-import type { PostMeta } from '~/types';
+import type { Post } from '~/types';
 
 type LatestPostsProps = {
-  posts: PostMeta[];
+  posts: Post[];
   // Limit is optional
   limit?: number;
 };
 
 const LatestBlogPost = ({ posts, limit = 3 }: LatestPostsProps) => {
-  const sortedPosts = [...posts].sort((a: PostMeta, b: PostMeta) => {
+  const sortedPosts = [...posts].sort((a: Post, b: Post) => {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
   // Limiting the array using slice
