@@ -10,13 +10,14 @@ export type Project = {
   featured: boolean;
 };
 
-export type PostMeta = {
+export type Post = {
   id: string;
   slug: string;
   title: string;
   excerpt: string;
   image: string;
   date: string;
+  body: string;
 };
 // Generic type
 export type StrapiResponse<T> = {
