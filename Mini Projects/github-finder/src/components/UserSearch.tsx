@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchGithubUser } from '../api/github';
 import UserCard from './UserCard';
@@ -9,7 +8,11 @@ import RecentSearches from './RecentSearch';
 const UserSearch = () => {
   const [userName, setUserName] = useState('');
   const [submittedUserName, setSubmittedUserName] = useState('');
-  const [recentUsers, setRecentUsers] = useState<string[]>([]);
+  const [recentUsers, setRecentUsers] = useState<string[]>(() => {
+    const stored = localStorage.getItem('recentUsers');
+    // Json parse converts object into string
+    return stored ? JSON.parse(stored) : [];
+  });
 
   // We dont need to initialize this value as we do in useEffect 'cuz useQuery takes care of it
   const { data, isLoading, isError, error } = useQuery({
@@ -21,26 +24,26 @@ const UserSearch = () => {
     // ['posts', 'zaid']
     // It will check in cache memory if it is present it wont fetch again, but if it is not present it will fetch the new user.
 
-//     Query starts
-//       │
-//       ▼
-// Does this queryKey exist in cache?
-//       │
-//    ┌──┴──┐
-//    │     │
-//   No    Yes
-//    │     │
-//    ▼     ▼
-// Call    Is cached data still fresh?
-// queryFn      │
-//              ├───────────┐
-//              │           │
-//            Yes          No
-//              │           │
-//              ▼           ▼
-//       Return cached   Return cached
-//       data only       data immediately
-//                       + fetch in background
+    //     Query starts
+    //       │
+    //       ▼
+    // Does this queryKey exist in cache?
+    //       │
+    //    ┌──┴──┐
+    //    │     │
+    //   No    Yes
+    //    │     │
+    //    ▼     ▼
+    // Call    Is cached data still fresh?
+    // queryFn      │
+    //              ├───────────┐
+    //              │           │
+    //            Yes          No
+    //              │           │
+    //              ▼           ▼
+    //       Return cached   Return cached
+    //       data only       data immediately
+    //                       + fetch in background
 
     queryKey: ['users', submittedUserName],
     // & this is where you write the function
@@ -63,6 +66,10 @@ const UserSearch = () => {
     });
   };
 
+  useEffect(() => {
+    // JSON.stringify converts the string into the Json Object
+    localStorage.setItem('recentUsers', JSON.stringify(recentUsers));
+  }, [recentUsers]);
   return (
     <>
       <form onSubmit={handleSubmit} className='form'>
