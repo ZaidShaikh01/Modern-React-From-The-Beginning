@@ -1,28 +1,46 @@
-import { FaClock,FaUser } from "react-icons/fa";
-type RecentSearchesProps = {
-    users: string[];
-    onSelect:(userName:string)=>void
-}
+import { FaClock, FaUser } from 'react-icons/fa';
+import { useQueryClient } from '@tanstack/react-query';
+import { fetchGithubUser } from '../api/github';
 
-const RecentSearches = ({users,onSelect}:RecentSearchesProps) => {
-    return ( <div className='recent-searches'>
-          <div className='recent-header'>
-            <FaClock />
-            <h3>Recent searches</h3>
-          </div>
-          <ul>
-            {users.map((user) => (
-              <li key={user}>
-                <button
-                  onClick={() => onSelect(user)}
-                >
-                  <FaUser className='user-icon' />
-                  {user}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div> );
-}
- 
+type RecentSearchesProps = {
+  users: string[];
+  onSelect: (userName: string) => void;
+};
+
+const RecentSearches = ({ users, onSelect }: RecentSearchesProps) => {
+  const queryClient = useQueryClient();
+  return (
+    <div className='recent-searches'>
+      <div className='recent-header'>
+        <FaClock />
+        <h3>Recent searches</h3>
+      </div>
+      <ul>
+        {users.map((user) => (
+          <li key={user}>
+            <button
+              onClick={() => onSelect(user)}
+              onMouseEnter={() => {
+                queryClient.prefetchQuery({
+                    // The whole array is like a composite key, it works like this
+//                     ['users', 'zaid']
+// ['users', 'octocat']
+// ['posts', 'zaid']
+// It will check in cache memory if it is present it wont fetch again, but if it is not present it will fetch the new user.
+
+                  queryKey: ['users', user],
+                  queryFn: () => fetchGithubUser(user),
+                });
+              }}
+            >
+              <FaUser className='user-icon' />
+              {user}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 export default RecentSearches;

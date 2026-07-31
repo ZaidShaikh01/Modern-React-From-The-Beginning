@@ -14,6 +14,34 @@ const UserSearch = () => {
   // We dont need to initialize this value as we do in useEffect 'cuz useQuery takes care of it
   const { data, isLoading, isError, error } = useQuery({
     // This is like the bracket we use in useEffect, everytime this changes it will call this funcion again, like listening to this key
+
+    // The whole array is like a composite key, it works like this
+    //                     ['users', 'zaid']
+    // ['users', 'octocat']
+    // ['posts', 'zaid']
+    // It will check in cache memory if it is present it wont fetch again, but if it is not present it will fetch the new user.
+
+//     Query starts
+//       │
+//       ▼
+// Does this queryKey exist in cache?
+//       │
+//    ┌──┴──┐
+//    │     │
+//   No    Yes
+//    │     │
+//    ▼     ▼
+// Call    Is cached data still fresh?
+// queryFn      │
+//              ├───────────┐
+//              │           │
+//            Yes          No
+//              │           │
+//              ▼           ▼
+//       Return cached   Return cached
+//       data only       data immediately
+//                       + fetch in background
+
     queryKey: ['users', submittedUserName],
     // & this is where you write the function
     queryFn: () => fetchGithubUser(submittedUserName),
