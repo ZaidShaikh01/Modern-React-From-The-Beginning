@@ -5,6 +5,7 @@ import { useDebounce } from 'use-debounce';
 import UserCard from './UserCard';
 import RecentSearches from './RecentSearch';
 import type { GitHubUser } from '../type';
+import SuggestionDropdown from './SuggestionDropdown';
 
 const UserSearch = () => {
   const [userName, setUserName] = useState('');
@@ -104,29 +105,25 @@ const UserSearch = () => {
           />
 
           {showSuggestions && suggestions?.length > 0 && (
-            <ul className='suggestions'>
-              {suggestions.slice(0, 5).map((user: GitHubUser) => (
-                <li
-                  key={user.login}
-                  onClick={() => {
-                    setUserName(user.login);
-                    setShowSuggestions(false);
-                    if (submittedUserName !== user.login) {
-                      setSubmittedUserName(user.login);
-                    } else {
-                      refetch();
-                    }
-                  }}
-                >
-                  <img
-                    src={user.avatar_url}
-                    alt={user.name}
-                    className='avatar-xs'
-                  />
-                  {user.login}
-                </li>
-              ))}
-            </ul>
+            <SuggestionDropdown
+              onSelect={(selected) => {
+                setUserName(selected);
+                setShowSuggestions(false);
+
+                if (submittedUserName !== selected) {
+                  setSubmittedUserName(selected);
+                } else {
+                  refetch();
+                }
+                setRecentUsers((prev) => {
+      const updated = [selected, ...prev.filter((user) => user !== selected)];
+      // returning the last 5 values
+      return updated.slice(0, 5);
+    });
+              }}
+              suggestions={suggestions}
+              show={showSuggestions}
+            />
           )}
         </div>
         <button type='submit'>Search</button>
